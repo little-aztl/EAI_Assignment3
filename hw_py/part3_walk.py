@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 xla_flags = os.environ.get('XLA_FLAGS', '')
 xla_flags += ' --xla_gpu_triton_gemm_any=True'
 os.environ['XLA_FLAGS'] = xla_flags
+os.environ['MUJOCO_GL'] = 'egl'
 
 import time
 import logging
@@ -89,10 +90,14 @@ class MyWalkEnv(Joystick):
 
         # TODO: your code here. hint: use DESIRED_XY_LIN_VEL and DESIRED_YAW_ANG_VEL as goal
         DESIRED_XY_LIN_VEL
-        tracking_lin_vel = ...
+        tracking_lin_vel = jp.exp(
+            -3 * jp.linalg.norm(DESIRED_XY_LIN_VEL - body_lin_vel[:2]) ** 2
+        )
 
         DESIRED_YAW_ANG_VEL
-        tracking_ang_vel = ...
+        tracking_ang_vel = jp.exp(
+            -3 * (DESIRED_YAW_ANG_VEL - body_ang_vel[2]) ** 2
+        )
 
         # TODO: End of your code.
         info = state.info
@@ -414,7 +419,7 @@ def train_ppo():
         width=640,
         scene_option=scene_option,
     )
-    media.write_video('../experiments/solutions/part3_video.mp4', frames)
+    media.write_video('experiments/solutions/part3_video.mp4', frames)
     print("video saved to part3.mp4")
 
 if __name__ == '__main__':
