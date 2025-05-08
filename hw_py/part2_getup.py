@@ -97,12 +97,12 @@ class MyGetupEnv(Getup):
         survival_bonus = 0.01
 
         reward = (
-            3.0 * height_reward +
-            1.5 * stability_reward +
+            # 3.0 * height_reward +
+            # 1.5 * stability_reward +
             1.0 * joint_pos_reward +
-            0.5 * orientation_reward -
-            joint_vel_penalty +
-            survival_bonus
+            0.5 * orientation_reward #-
+            # joint_vel_penalty +
+            # survival_bonus
         )
 
         # TODO: End of your code.
